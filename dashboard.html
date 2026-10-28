@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Eduvos Banking App</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class ="dashboard-body">
+
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <!-- Navigation: same nav-bar as the login page's shared styles.
+       Move aria-current="page" to the link for the current page. -->
+  <nav class="nav-bar" aria-label="Main">
+    <span class="nav-brand">Eduvos Banking</span>
+    <span class="nav-spacer"></span>
+    <a href="dashboard.html" aria-current="page">Dashboard</a>
+    <a href="transactions.html">Transactions</a>
+    <a href="transfer.html">Transfer</a>
+    <a href="index.html" data-logout>Logout</a>
+  </nav>
+
+  <main id="main" class="dashboard-main">
+
+    <h1 id="greeting">Hello</h1>
+    <p class="muted">Here is an overview of your fictional account.</p>
+
+    <!-- Balance card -->
+    <section class="dashboard-card" aria-labelledby="balance-heading">
+      <h2 id="balance-heading" class="balance-label">Available balance</h2>
+      <p class="balance-amount" id="balance" aria-live="polite">R 0.00</p>
+      <button type="button" class="btn btn-secondary" id="toggle-balance" aria-controls="balance">Hide balance</button>
+        
+      
+    </section>
+
+    <!-- Recent activity -->
+    <section class="dashboard-card" aria-labelledby="recent-heading">
+      <h2 id="recent-heading">Recent activity</h2>
+      <p class="muted" id="recent-empty" hidden>No transactions yet.</p>
+      <ul class="tx-list" id="recent-list"></ul>
+      <p><a href="transactions.html">View all transactions</a></p>
+    </section>
+
+  </main>
+
+  <!-- data.js must load first: dashboard.js uses its functions -->
+  <script src="js/data.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
