@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eduvos Bank — Confirm Transfer</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/confirm.css" />
+</head>
+
+<body class="login-body">
+
+  <!-- Shared navigation bar (class from style.css). The confirm screen is part of
+       the transfer flow, so "Transfer" is marked as the current page. -->
+  <nav class="nav-bar" aria-label="Main navigation">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="transactions.html">Transactions</a>
+    <a href="transfer.html" aria-current="page">Transfer</a>
+    <span class="nav-spacer"></span>
+    <a href="index.html" id="logout-link">Logout</a>
+  </nav>
+
+  <main class="login-main">
+    <!-- Brand header: same icon + wordmark as the login and transfer pages -->
+    <header class="login-brand">
+      <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 10.5 12 4l9 6.5" />
+        <path d="M4 20h16" />
+        <path d="M6 20v-7M10 20v-7M14 20v-7M18 20v-7" />
+        <path d="M6.5 13h11" />
+      </svg>
+      <h1>Eduvos Bank</h1>
+      <p class="tagline">Your Goals. Our Priority.</p>
+    </header>
+
+    <section class="login-welcome" aria-labelledby="confirm-heading">
+      <h2 id="confirm-heading">Confirm Transfer</h2>
+      <p>Check the details, then send</p>
+    </section>
+
+    <!-- STATE 1: review the transfer before it is sent -->
+    <section id="review-card" class="login-card hidden" aria-labelledby="review-title">
+      <h3 id="review-title" class="step-title">Please check these details</h3>
+      <p class="step-note">This is a simulated transfer. No real money is moved.</p>
+
+      <dl class="summary">
+        <div><dt>Recipient</dt><dd id="c-recipient"></dd></div>
+        <div><dt>Account Number</dt><dd id="c-account"></dd></div>
+        <div><dt>Amount</dt><dd id="c-amount"></dd></div>
+        <div><dt>Balance Now</dt><dd id="c-now"></dd></div>
+        <div class="summary-total"><dt>Balance After</dt><dd id="c-after"></dd></div>
+      </dl>
+
+      <div class="btn-stack">
+        <button type="button" id="confirm-btn" class="btn btn-primary">Confirm &amp; Send</button>
+        <a href="transfer.html" class="btn btn-secondary">Edit Details</a>
+        <button type="button" id="cancel-btn" class="btn btn-secondary">Cancel</button>
+      </div>
+    </section>
+
+    <!-- STATE 2: result (success, cancelled or error).
+         role="alert" makes screen readers read the message straight away. -->
+    <section id="result-card" class="login-card hidden" aria-live="polite">
+      <div id="result-tick" class="result-tick" aria-hidden="true"></div>
+      <div id="result-alert" class="result-alert" role="alert"></div>
+      <ul id="result-errors" class="result-errors"></ul>
+
+      <dl id="result-details" class="summary hidden">
+        <div><dt>Reference</dt><dd id="r-ref"></dd></div>
+        <div><dt>Amount Sent</dt><dd id="r-amount"></dd></div>
+        <div class="summary-total"><dt>New Balance</dt><dd id="r-balance"></dd></div>
+      </dl>
+
+      <div id="result-buttons" class="btn-stack"></div>
+    </section>
+  </main>
+
+  <footer class="login-footer">Secure &middot; Simple &middot; Together</footer>
+
+  <!-- Short pop-up notification after an action -->
+  <div id="toast" class="toast hidden" role="status"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/confirm.js"></script>
+</body>
+</html>

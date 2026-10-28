@@ -1,0 +1,84 @@
+/* ============================================================
+   Eduvos Banking App — CONFIRM PAGE STYLES (css/confirm.css)
+   Load AFTER style.css. Reuses its colour variables, .login-card,
+   .btn, .btn-primary and .nav-bar. Only adds what confirm.html needs,
+   so it does not clash with transfer.css (same class names, same look).
+   ============================================================ */
+
+.hidden { display: none !important; }
+
+/* The shared .nav-bar does not wrap, so on a 360px phone it overflows.
+   These two small rules let it wrap on this page. */
+.nav-bar { flex-wrap: wrap; gap: 4px; }
+.nav-bar a { padding: 0.4rem 0.6rem; font-size: 0.95rem; }
+
+.step-title { margin: 0 0 4px; }
+.step-note { margin: 0 0 16px; font-size: 0.9rem; color: var(--colour-text-muted); }
+
+/* Label + value rows */
+.summary { margin: 0 0 18px; padding: 0; }
+.summary div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--colour-border);
+}
+.summary dt { color: var(--colour-text-muted); }
+.summary dd { margin: 0; font-weight: 600; text-align: right; word-break: break-word; }
+.summary-total dd { font-size: 1.15rem; color: var(--colour-primary); }
+
+/* Buttons stacked full-width (good on a 360px phone) */
+.btn-stack { display: flex; flex-direction: column; gap: 10px; }
+.btn-stack .btn { width: 100%; }
+
+.btn-secondary {
+  width: 100%;
+  background: var(--colour-surface);
+  color: var(--colour-primary);
+  border: 1.5px solid var(--colour-primary);
+}
+.btn-secondary:hover { background: #eef3f9; }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Result message */
+.result-tick {
+  width: 56px; height: 56px; margin: 0 auto 12px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; font-weight: 700;
+}
+.result-tick.success { background: #e5f4ea; color: var(--colour-success); }
+.result-tick.error   { background: #fdecea; color: var(--colour-error); }
+
+.result-alert {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-input);
+  margin-bottom: var(--space-md);
+  font-weight: 600;
+  text-align: center;
+}
+.result-alert.success { background: #e5f4ea; color: #1b6e3a; border: 1px solid #1b6e3a; }
+.result-alert.error   { background: #fdecea; color: var(--colour-error); border: 1px solid #f5c6c0; }
+
+.result-errors { margin: 0 0 var(--space-md); padding-left: 1.2rem; color: var(--colour-error); font-size: 0.9rem; }
+.result-errors:empty { display: none; }
+
+/* Toast pop-up */
+.toast {
+  position: fixed;
+  left: 50%; top: 4.5rem;
+  transform: translateX(-50%);
+  max-width: 90%;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-input);
+  background: var(--colour-text);
+  color: var(--colour-surface);
+  box-shadow: var(--shadow-card);
+  z-index: 10;
+}
+
+/* Wider screens: put the two secondary buttons side by side */
+@media (min-width: 768px) {
+  .login-main { max-width: 480px; }
+}
