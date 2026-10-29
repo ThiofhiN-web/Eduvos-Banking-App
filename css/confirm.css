@@ -7,11 +7,6 @@
 
 .hidden { display: none !important; }
 
-/* The shared .nav-bar does not wrap, so on a 360px phone it overflows.
-   These two small rules let it wrap on this page. */
-.nav-bar { flex-wrap: wrap; gap: 4px; }
-.nav-bar a { padding: 0.4rem 0.6rem; font-size: 0.95rem; }
-
 .step-title { margin: 0 0 4px; }
 .step-note { margin: 0 0 16px; font-size: 0.9rem; color: var(--colour-text-muted); }
 
@@ -24,8 +19,8 @@
   padding: 12px 0;
   border-bottom: 1px solid var(--colour-border);
 }
-.summary dt { color: var(--colour-text-muted); }
-.summary dd { margin: 0; font-weight: 600; text-align: right; word-break: break-word; }
+.summary dt { color: var(--colour-text-muted); flex-shrink: 0; }
+.summary dd { margin: 0; font-weight: 600; text-align: right; word-break: break-word; overflow-wrap: anywhere; }
 .summary-total dd { font-size: 1.15rem; color: var(--colour-primary); }
 
 /* Buttons stacked full-width (good on a 360px phone) */

@@ -236,3 +236,61 @@
     gap: 16px;
   }
 }
+
+/* ---------- Mobile screens (smartphones <= 480px) ---------- */
+@media (max-width: 480px) {
+  .tx-main {
+    padding: 12px 10px 24px;
+  }
+  .tx-header h1 {
+    font-size: 1.35rem;
+  }
+  .tx-header p {
+    font-size: 0.88rem;
+    margin-bottom: 14px;
+  }
+  .tx-summary {
+    gap: 8px;
+  }
+  .tx-stat {
+    padding: 10px 12px;
+  }
+  .tx-stat-label {
+    font-size: 0.85rem;
+  }
+  .tx-stat-value {
+    font-size: 1.05rem;
+  }
+  .tx-card {
+    padding: 12px;
+  }
+  .tx-field input,
+  .tx-field select {
+    font-size: 16px; /* Prevents auto-zoom on mobile */
+  }
+  .tx-item {
+    padding: 10px 12px;
+  }
+  .tx-desc {
+    font-size: 0.92rem;
+  }
+  .tx-amount {
+    font-size: 0.95rem;
+  }
+}
+
+/* ---------- Extra small phones (<= 360px) ---------- */
+@media (max-width: 360px) {
+  .tx-item {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "badge"
+      "info"
+      "amount";
+    gap: 4px;
+  }
+  .tx-amount {
+    justify-self: start;
+    margin-top: 2px;
+  }
+}

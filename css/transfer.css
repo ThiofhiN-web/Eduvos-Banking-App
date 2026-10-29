@@ -1,24 +1,24 @@
 /* Extra styles for the Transfer page.
-   Load AFTER style.css. It reuses the login page classes (login-card, field,
-   input-wrap, field-error, form-alert, btn, btn-primary). If your style.css
-   already has colour variables, swap the hex values below for them. */
+   Load AFTER style.css. Reuses the login page classes. */
 
 .hidden { display: none !important; }
 
 .balance-strip {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+  width: 100%;
   max-width: 420px;
   margin: 0 auto 16px;
   padding: 12px 16px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
+  border-radius: 12px;
   color: #ffffff;
+  box-sizing: border-box;
 }
 .balance-strip span {
-  font-size: .9rem;
+  font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.85);
 }
 .balance-strip strong {
@@ -28,29 +28,57 @@
 }
 
 .step-title { margin: 0 0 4px; }
-.step-note { margin: 0 0 16px; font-size: .9rem; opacity: .75; }
+.step-note { margin: 0 0 16px; font-size: 0.9rem; opacity: 0.75; }
 
 .summary { margin: 0 0 18px; padding: 0; }
 .summary div {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   gap: 12px;
   padding: 12px 0;
   border-bottom: 1px solid #e3eaef;
 }
-.summary dt { opacity: .7; }
-.summary dd { margin: 0; font-weight: 600; text-align: right; }
-
-.btn-row { display: flex; gap: 10px; }
-.btn-row .btn { flex: 1; }
-.btn-secondary {
-  background: #fff;
-  color: inherit;
-  border: 1.5px solid currentColor;
+.summary dt {
+  opacity: 0.75;
+  font-size: 0.92rem;
+  flex-shrink: 0;
 }
-.btn-link { display: inline-block; text-align: center; text-decoration: none; }
+.summary dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
 
-.input-wrap input.invalid { border-color: #b3261e; background: #fdecea; }
+.btn-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+.btn-row .btn {
+  flex: 1;
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: #16406b;
+  border: 1.5px solid #16406b;
+}
+.btn-secondary:hover {
+  background: #f0f4f9;
+}
+.btn-link {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.input-wrap input.invalid {
+  border-color: #b3261e;
+  background: #fdecea;
+}
 
 .form-alert.success {
   display: block;
@@ -60,9 +88,55 @@
 }
 
 .success-tick {
-  width: 56px; height: 56px; margin: 0 auto 12px;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 12px;
   border-radius: 50%;
-  background: #e5f4ea; color: #1b6e3a;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.8rem;
+  background: #e5f4ea;
+  color: #1b6e3a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+}
+
+/* Mobile optimizations for different screen sizes */
+@media (max-width: 520px) {
+  .btn-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .btn-row .btn {
+    width: 100%;
+    flex: none;
+    padding: 0.85rem 1rem;
+  }
+  /* Primary confirmation action comes first on mobile for thumb ergonomics */
+  .btn-row #confirm-btn {
+    order: -1;
+  }
+}
+
+@media (max-width: 380px) {
+  .balance-strip {
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+  }
+  .balance-strip span {
+    font-size: 0.82rem;
+  }
+  .balance-strip strong {
+    font-size: 1.15rem;
+  }
+  .step-title {
+    font-size: 1.2rem;
+  }
+  .step-note {
+    font-size: 0.82rem;
+    margin-bottom: 12px;
+  }
+  .summary div {
+    padding: 10px 0;
+  }
 }
