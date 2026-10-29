@@ -1,11 +1,4 @@
-/* ============================================================
-   Eduvos Banking App — SHARED STYLES
-   Everyone links to this file. Add new styles at the bottom of
-   the relevant section, never hardcode colours in your pages.
-   Palette taken from the group's design reference (dark navy).
-   ============================================================ */
-
-/* ---------- 1. Design tokens (CSS variables) ---------- */
+ 
 :root {
   /* Colours */
   --colour-navy:        #0b2547;   /* primary dark */
@@ -21,7 +14,7 @@
   --colour-success:     #1e8e5a;
   --colour-focus-ring:  #7db3ff;
 
-  /* Typography */
+  /* the  typography */
   --font-stack: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* Shape & depth */
@@ -36,7 +29,7 @@
   --space-lg: 2rem;
 }
 
-/* ---------- 2. Base / reset ---------- */
+/* ----------  Base / reset ---------- */
 *,
 *::before,
 *::after { box-sizing: border-box; }
@@ -63,7 +56,7 @@ a { color: var(--colour-accent); }
   border-radius: 4px;
 }
 
-/* Screen-reader-only helper */
+/* Screen-reader-only helper */ 
 .sr-only {
   position: absolute;
   width: 1px; height: 1px;
@@ -74,7 +67,7 @@ a { color: var(--colour-accent); }
   border: 0;
 }
 
-/* ---------- 3. Login page layout (index.html) ---------- */
+/*  Login page layout (index.html)  */
 .login-body {
   /* Dark layered gradient inspired by the group reference design */
   min-height: 100vh;
@@ -144,7 +137,7 @@ a { color: var(--colour-accent); }
   word-spacing: 6px;
 }
 
-/* ---------- 4. Forms ---------- */
+/*   Forms  */
 .field { margin-bottom: var(--space-md); }
 
 .field label {
@@ -235,7 +228,7 @@ a { color: var(--colour-accent); }
 }
 .login-signup a { font-weight: 700; }
 
-/* ---------- 5. Buttons ---------- */
+/*   Buttons */
 .btn {
   display: inline-block;
   font-family: inherit;
@@ -259,7 +252,7 @@ a { color: var(--colour-accent); }
 }
 .btn-primary:hover { background: var(--colour-primary-hover); }
 
-/* ---------- 6. Validation / alert messages ---------- */
+/*   alert messages   */
 .field-error {
   display: none; /* JS toggles this */
   color: var(--colour-error);
@@ -282,7 +275,7 @@ a { color: var(--colour-accent); }
 
 .form-alert.visible { display: block; }
 
-/* ---------- 7. Shared navigation bar (other pages use this) ---------- */
+/*   Shared navigation bar  */
 .nav-bar {
   display: flex;
   align-items: center;
@@ -308,9 +301,142 @@ a { color: var(--colour-accent); }
 
 .nav-bar .nav-spacer { flex: 1; }
 
-/* ---------- 8. Small screens ---------- */
+/*  8. Small screens  */
 @media (max-width: 400px) {
   .login-main { padding: var(--space-md) var(--space-sm); }
   .login-card { padding: var(--space-md); }
   .login-options { flex-direction: column; align-items: flex-start; }
+}
+
+/*  9. Dashboard (dashboard.html)  */
+/* Same dark gradient as the login page, with white cards on top. */
+.dashboard-body {
+  min-height: 100vh;
+  background:
+    radial-gradient(120% 90% at 80% -10%, #1c4e89 0%, transparent 55%),
+    radial-gradient(100% 80% at 10% 110%, #123c6e 0%, transparent 55%),
+    linear-gradient(180deg, var(--colour-navy-deep) 0%, var(--colour-navy) 100%);
+  color: var(--colour-surface);
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-sm);
+  top: -3rem;
+  background: var(--colour-surface);
+  color: var(--colour-primary);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 8px;
+  z-index: 10;
+}
+.skip-link:focus { top: var(--space-sm); }
+
+.nav-brand {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-body .nav-bar { flex-wrap: wrap; }
+
+.dashboard-main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md);
+}
+
+.dashboard-main h1 {
+  color: var(--colour-surface);
+  font-size: 1.6rem;
+}
+
+/* Intro line sits on the dark background, so it needs light text */
+.dashboard-main > .muted {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.dashboard-card {
+  background: var(--colour-surface);
+  color: var(--colour-text);
+  border-radius: var(--radius-card);
+  box-shadow: 0 2px 8px rgba(11, 37, 71, 0.08);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.dashboard-card h2 {
+  font-size: 1.15rem;
+  color: var(--colour-primary);
+}
+
+.muted {
+  color: var(--colour-text-muted);
+}
+
+.balance-label {
+  margin: 0;
+  color: var(--colour-text-muted);
+  font-size: 0.95rem;
+}
+
+.balance-amount {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--colour-primary);
+  margin: var(--space-xs) 0 var(--space-sm);
+}
+
+/* Secondary button:  "Hide balance" */
+.btn-secondary {
+  width: auto;
+  background: transparent;
+  color: var(--colour-primary);
+  border: 1.5px solid var(--colour-primary);
+}
+.btn-secondary:hover {
+  background: var(--colour-primary);
+  color: var(--colour-surface);
+}
+
+/* Transaction list */
+.tx-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tx-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--colour-border);
+}
+.tx-item:last-child { border-bottom: none; }
+
+.tx-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.tx-type {
+  font-size: 0.85rem;
+  color: var(--colour-text-muted);
+}
+
+.amount-deposit,
+.amount-withdrawal {
+  font-weight: 700;
+  white-space: nowrap;
+}
+.amount-deposit { color: var(--colour-success); }
+.amount-withdrawal { color: var(--colour-error); }
+
+.dashboard-main a {
+  font-weight: 600;
+}
+
+@media (min-width: 720px) {
+  .balance-amount { font-size: 2.75rem; }
 }

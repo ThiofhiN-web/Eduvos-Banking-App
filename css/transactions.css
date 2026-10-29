@@ -1,0 +1,238 @@
+/* transactions.css: styles for the Transaction history page only.
+   Load AFTER style.css.
+
+   COLOURS: style.css was not available when this file was written, so the
+   colours below are defined once as local variables, each with a fallback.
+   When style.css is pushed, change the fallback side to the shared variable
+   names (for example --tx-primary: var(--color-primary);) and every colour in
+   this file updates at once. */
+
+.tx-body {
+  --tx-primary: #1a4d8f;
+  --tx-primary-dark: #123a6d;
+  --tx-bg: #f3f6f9;
+  --tx-surface: #ffffff;
+  --tx-text: #1f2a33;
+  --tx-muted: #566673;
+  --tx-border: #d9e2e8;
+  --tx-in: #1b6e3a;
+  --tx-in-bg: #e5f4ea;
+  --tx-out: #b3261e;
+  --tx-out-bg: #fdecea;
+
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--tx-bg);
+  color: var(--tx-text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* ---------- Navigation bar ----------
+   TEMPORARY: the shared nav belongs in style.css. Delete this section once the
+   shared nav styles exist, so every page uses the same ones. */
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 10px 16px;
+  background: var(--tx-primary);
+  color: #fff;
+}
+.site-nav-brand { font-weight: 700; font-size: 1.1rem; }
+.site-nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-nav-links a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #fff;
+  text-decoration: none;
+}
+.site-nav-links a:hover { background: var(--tx-primary-dark); }
+.site-nav-links a[aria-current="page"] {
+  background: #fff;
+  color: var(--tx-primary);
+  font-weight: 700;
+}
+
+/* ---------- Layout ---------- */
+.tx-main {
+  flex: 1;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 20px 16px 32px;
+  box-sizing: border-box;
+}
+.tx-header h1 { margin: 0 0 4px; font-size: 1.6rem; }
+.tx-header p { margin: 0 0 18px; color: var(--tx-muted); }
+
+.tx-footer {
+  padding: 16px;
+  text-align: center;
+  font-size: .9rem;
+  color: var(--tx-muted);
+}
+
+/* Visible keyboard focus on everything interactive */
+.tx-body a:focus-visible,
+.tx-body button:focus-visible,
+.tx-body input:focus-visible,
+.tx-body select:focus-visible {
+  outline: 3px solid var(--tx-primary);
+  outline-offset: 2px;
+}
+
+/* ---------- Alert box ---------- */
+.tx-alert {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--tx-out);
+  border-radius: 10px;
+  background: var(--tx-out-bg);
+  color: var(--tx-out);
+}
+.tx-alert[hidden] { display: none; }
+
+/* ---------- Summary ---------- */
+.tx-summary {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.tx-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 16px;
+  background: var(--tx-surface);
+  border: 1px solid var(--tx-border);
+  border-radius: 10px;
+}
+.tx-stat-label { font-size: .95rem; color: var(--tx-muted); }
+.tx-stat-value { font-size: 1.2rem; }
+.tx-in { color: var(--tx-in); }
+.tx-out { color: var(--tx-out); }
+
+/* ---------- Filter card ---------- */
+.tx-card {
+  margin-bottom: 22px;
+  padding: 16px;
+  background: var(--tx-surface);
+  border: 1px solid var(--tx-border);
+  border-radius: 12px;
+}
+.tx-card-title { margin: 0 0 12px; font-size: 1.1rem; }
+
+.tx-filters { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.tx-field { display: flex; flex-direction: column; gap: 4px; }
+.tx-field label { font-size: .95rem; font-weight: 600; }
+.tx-field input,
+.tx-field select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--tx-text);
+  background: #fff;
+  border: 1.5px solid var(--tx-border);
+  border-radius: 8px;
+}
+.tx-field-button { justify-content: flex-end; }
+
+/* ---------- Buttons ---------- */
+.tx-btn {
+  display: inline-block;
+  padding: 10px 16px;
+  font: inherit;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  color: var(--tx-primary);
+  background: #fff;
+  border: 1.5px solid var(--tx-primary);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.tx-btn:hover { background: var(--tx-bg); }
+.tx-btn[hidden] { display: none; }
+
+/* ---------- Results ---------- */
+.tx-results-title { margin: 0 0 4px; font-size: 1.2rem; }
+.tx-count { margin: 0 0 12px; font-size: .95rem; color: var(--tx-muted); min-height: 1.4em; }
+
+.tx-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+
+/* One row on a phone: badge on top, details, then amount */
+.tx-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "badge  badge"
+    "info   amount";
+  gap: 6px 12px;
+  align-items: center;
+  padding: 12px 14px;
+  background: var(--tx-surface);
+  border: 1px solid var(--tx-border);
+  border-left-width: 5px;
+  border-radius: 10px;
+}
+.tx-item-deposit { border-left-color: var(--tx-in); }
+.tx-item-withdrawal { border-left-color: var(--tx-out); }
+
+.tx-badge {
+  grid-area: badge;
+  justify-self: start;
+  padding: 2px 10px;
+  font-size: .85rem;
+  font-weight: 700;
+  border-radius: 999px;
+}
+.tx-badge-in { background: var(--tx-in-bg); color: var(--tx-in); }
+.tx-badge-out { background: var(--tx-out-bg); color: var(--tx-out); }
+
+.tx-info { grid-area: info; min-width: 0; }
+.tx-desc { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.tx-meta { margin: 2px 0 0; font-size: .9rem; color: var(--tx-muted); overflow-wrap: anywhere; }
+.tx-amount { grid-area: amount; margin: 0; font-size: 1.1rem; font-weight: 700; white-space: nowrap; }
+
+/* ---------- Empty state ---------- */
+.tx-empty {
+  padding: 24px 16px;
+  text-align: center;
+  background: var(--tx-surface);
+  border: 1px dashed var(--tx-border);
+  border-radius: 12px;
+}
+.tx-empty[hidden] { display: none; }
+.tx-empty p { margin: 0 0 12px; }
+
+/* ---------- Wider screens (tablet and desktop) ---------- */
+@media (min-width: 720px) {
+  .tx-main { padding: 28px 24px 40px; }
+  .tx-summary { grid-template-columns: repeat(3, 1fr); }
+  .tx-stat { flex-direction: column; align-items: flex-start; gap: 2px; }
+
+  .tx-filters { grid-template-columns: 2fr 1fr 1fr auto; align-items: end; }
+
+  /* One line per transaction: badge | details | amount */
+  .tx-item {
+    grid-template-columns: 120px 1fr auto;
+    grid-template-areas: "badge info amount";
+    gap: 16px;
+  }
+}

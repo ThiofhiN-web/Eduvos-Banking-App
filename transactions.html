@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eduvos Bank — Transactions</title>
+    <!-- Shared styles first, then the styles for this page only -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/transactions.css" />
+</head>
+
+<body class="tx-body">
+
+<!-- Shared navigation bar. Keep this identical on every page;
+     only the aria-current="page" attribute moves to the current page. -->
+<nav class="site-nav" aria-label="Main navigation">
+    <span class="site-nav-brand">Eduvos Bank</span>
+    <ul class="site-nav-links">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="transactions.html" aria-current="page">Transactions</a></li>
+        <li><a href="transfer.html">Transfer</a></li>
+        <li><a href="index.html" id="logout-link">Logout</a></li>
+    </ul>
+</nav>
+
+<main class="tx-main">
+
+    <header class="tx-header">
+        <h1>Transaction History</h1>
+        <p>Your recent deposits and withdrawals</p>
+    </header>
+
+    <!-- Shown only if the browser blocks storage or the saved data is broken -->
+    <div id="tx-alert" class="tx-alert" role="alert" hidden></div>
+
+    <!-- Summary of ALL transactions -->
+    <section class="tx-summary" aria-label="Summary of your transactions">
+        <div class="tx-stat">
+            <span class="tx-stat-label">Total deposits</span>
+            <strong id="sum-deposits" class="tx-stat-value tx-in">R 0.00</strong>
+        </div>
+        <div class="tx-stat">
+            <span class="tx-stat-label">Total withdrawals</span>
+            <strong id="sum-withdrawals" class="tx-stat-value tx-out">R 0.00</strong>
+        </div>
+        <div class="tx-stat">
+            <span class="tx-stat-label">Transactions</span>
+            <strong id="sum-count" class="tx-stat-value">0</strong>
+        </div>
+    </section>
+
+    <!-- Search / filter / sort -->
+    <section class="tx-card" aria-labelledby="filter-heading">
+        <h2 id="filter-heading" class="tx-card-title">Search and filter</h2>
+
+        <form id="filter-form" class="tx-filters" role="search" novalidate>
+            <div class="tx-field tx-field-search">
+                <label for="search">Search</label>
+                <input type="search" id="search" name="search"
+                       placeholder="Description, reference or amount" autocomplete="off" />
+            </div>
+
+            <div class="tx-field">
+                <label for="type-filter">Type</label>
+                <select id="type-filter" name="type-filter">
+                    <option value="all">All transactions</option>
+                    <option value="deposit">Deposits only</option>
+                    <option value="withdrawal">Withdrawals only</option>
+                </select>
+            </div>
+
+            <div class="tx-field">
+                <label for="sort">Sort by</label>
+                <select id="sort" name="sort">
+                    <option value="newest">Newest first</option>
+                    <option value="oldest">Oldest first</option>
+                    <option value="high">Amount: high to low</option>
+                    <option value="low">Amount: low to high</option>
+                </select>
+            </div>
+
+            <div class="tx-field tx-field-button">
+                <button type="button" id="clear-btn" class="tx-btn">Clear filters</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Results -->
+    <section aria-labelledby="results-heading">
+        <h2 id="results-heading" class="tx-results-title">Transactions</h2>
+
+        <!-- aria-live: screen readers announce this after every search or filter change -->
+        <p id="result-count" class="tx-count" aria-live="polite"></p>
+
+        <ul id="tx-list" class="tx-list"></ul>
+
+        <div id="tx-empty" class="tx-empty" hidden>
+            <p id="tx-empty-msg"></p>
+            <button type="button" id="empty-clear-btn" class="tx-btn" hidden>Clear filters</button>
+            <a href="transfer.html" id="empty-transfer-link" class="tx-btn tx-btn-link" hidden>Go to Transfer</a>
+        </div>
+    </section>
+
+</main>
+
+<footer class="tx-footer">Secure &middot; Simple &middot; Together</footer>
+
+<script src="js/transactions.js"></script>
+</body>
+</html>
