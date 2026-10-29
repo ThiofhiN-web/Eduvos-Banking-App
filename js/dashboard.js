@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
   toggleBtn.addEventListener("click", function () {
     balanceVisible = !balanceVisible;
     showBalance();
+    showToast(balanceVisible ? "Available balance is now visible." : "Available balance is now hidden.", "info", 2000);
   });
 
   showBalance();
@@ -43,10 +44,12 @@ document.addEventListener("DOMContentLoaded", function () {
     .slice()
     .sort(function (a, b) {
       // Newest date comes first. Same date: then later-added (higher id) comes first.
-      if (a.date !== b.date) {
-        return a.date < b.date ? 1 : -1;
+      const timeA = new Date(a.date.includes("T") ? a.date : a.date + "T00:00:00").getTime() || 0;
+      const timeB = new Date(b.date.includes("T") ? b.date : b.date + "T00:00:00").getTime() || 0;
+      if (timeA !== timeB) {
+        return timeB - timeA;
       }
-      return b.id - a.id;
+      return (b.id || 0) - (a.id || 0);
     })
     .slice(0, 5);
 

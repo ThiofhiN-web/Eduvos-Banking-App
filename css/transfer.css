@@ -12,12 +12,20 @@
   max-width: 420px;
   margin: 0 auto 16px;
   padding: 12px 16px;
-  background: #fff;
-  border: 1px solid #d9e2e8;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
+  color: #ffffff;
 }
-.balance-strip span { font-size: .9rem; opacity: .7; }
-.balance-strip strong { font-size: 1.3rem; }
+.balance-strip span {
+  font-size: .9rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+.balance-strip strong {
+  font-size: 1.35rem;
+  color: #ffffff;
+  font-weight: 700;
+}
 
 .step-title { margin: 0 0 4px; }
 .step-note { margin: 0 0 16px; font-size: .9rem; opacity: .75; }

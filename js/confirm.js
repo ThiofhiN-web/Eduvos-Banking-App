@@ -6,25 +6,26 @@
 
 // ---------- 1. Protect the page: must be logged in ----------
 if (!requireLogin()) {
-  // requireLogin() already redirected to index.html; stop running this file.
   throw new Error("Not logged in");
 }
 
-// ---------- 2. Grab the page elements we need ----------
-const reviewSection = document.getElementById("reviewSection");
-const resultSection = document.getElementById("resultSection");
-const resultMessage = document.getElementById("resultMessage");
-const resultErrors = document.getElementById("resultErrors");
-const resultDetails = document.getElementById("resultDetails");
-const resultButtons = document.getElementById("resultButtons");
-const confirmBtn = document.getElementById("confirmBtn");
-const cancelBtn = document.getElementById("cancelBtn");
+// ---------- 2. Grab the page elements we need (matching confirm.html IDs) ----------
+const reviewCard = document.getElementById("review-card");
+const resultCard = document.getElementById("result-card");
+const resultTick = document.getElementById("result-tick");
+const resultAlert = document.getElementById("result-alert");
+const resultErrors = document.getElementById("result-errors");
+const resultDetails = document.getElementById("result-details");
+const resultButtons = document.getElementById("result-buttons");
+const confirmBtn = document.getElementById("confirm-btn");
+const cancelBtn = document.getElementById("cancel-btn");
 const toast = document.getElementById("toast");
 
 // ---------- 3. Small helper functions ----------
 
 // Shows a short pop-up message for 3 seconds.
 function showToast(text) {
+  if (!toast) return;
   toast.textContent = text;
   toast.classList.remove("hidden");
   setTimeout(function () {
@@ -44,19 +45,28 @@ function makeLink(text, href, isPrimary) {
 // Shows the result card with a success or error message.
 // type is "success" or "error". errors is an optional list of problems.
 function showResult(type, text, errors) {
-  reviewSection.classList.add("hidden");
-  resultSection.classList.remove("hidden");
+  if (reviewCard) reviewCard.classList.add("hidden");
+  if (resultCard) resultCard.classList.remove("hidden");
 
-  resultMessage.textContent = text;
-  resultMessage.className = "message message-" + type;
+  if (resultAlert) {
+    resultAlert.textContent = text;
+    resultAlert.className = "result-alert " + type;
+  }
+
+  if (resultTick) {
+    resultTick.textContent = type === "success" ? "\u2713" : "!";
+    resultTick.className = "result-tick " + type;
+  }
 
   // Clear old errors, then list any new ones
-  resultErrors.innerHTML = "";
-  (errors || []).forEach(function (err) {
-    const li = document.createElement("li");
-    li.textContent = err;       // textContent (not innerHTML) keeps typed text safe
-    resultErrors.appendChild(li);
-  });
+  if (resultErrors) {
+    resultErrors.innerHTML = "";
+    (errors || []).forEach(function (err) {
+      const li = document.createElement("li");
+      li.textContent = err;
+      resultErrors.appendChild(li);
+    });
+  }
 }
 
 // ---------- 4. Page start: read and check the pending transfer ----------
@@ -67,6 +77,7 @@ if (!pending) {
   showResult("error", "There is no transfer to confirm.", [
     "Please fill in the transfer form first."
   ]);
+  showToast("There is no transfer to confirm.", "error");
   resultButtons.appendChild(makeLink("Go to Transfer page", "transfer.html", true));
 } else {
   // Double-check the values (the balance may have changed since the form)
@@ -74,59 +85,77 @@ if (!pending) {
 
   if (problems.length > 0) {
     showResult("error", "We could not confirm this transfer.", problems);
+    showToast("Transfer details could not be verified.", "error");
     resultButtons.appendChild(makeLink("Back to Transfer page", "transfer.html", true));
   } else {
     // Everything is fine: show the review summary
     const bank = getBankData();
     const amount = Number(pending.amount);
 
-    document.getElementById("sumRecipient").textContent = pending.recipient.trim();
-    document.getElementById("sumAccount").textContent = pending.accountNumber;
-    document.getElementById("sumAmount").textContent = formatCurrency(amount);
-    document.getElementById("sumBalanceNow").textContent = formatCurrency(bank.balance);
-    document.getElementById("sumBalanceAfter").textContent = formatCurrency(bank.balance - amount);
+    const elRecipient = document.getElementById("c-recipient");
+    const elAccount = document.getElementById("c-account");
+    const elAmount = document.getElementById("c-amount");
+    const elNow = document.getElementById("c-now");
+    const elAfter = document.getElementById("c-after");
 
-    reviewSection.classList.remove("hidden");
-    confirmBtn.focus(); // helps keyboard users
+    if (elRecipient) elRecipient.textContent = pending.recipient.trim();
+    if (elAccount) elAccount.textContent = pending.accountNumber || pending.account;
+    if (elAmount) elAmount.textContent = formatCurrency(amount);
+    if (elNow) elNow.textContent = formatCurrency(bank.balance);
+    if (elAfter) elAfter.textContent = formatCurrency(bank.balance - amount);
+
+    if (reviewCard) reviewCard.classList.remove("hidden");
+    if (confirmBtn) confirmBtn.focus();
+    showToast("Please review your transfer details.", "info");
   }
 }
 
 // ---------- 5. Confirm button: simulate sending the money ----------
-confirmBtn.addEventListener("click", function () {
-  // Stop double-clicks and show that something is happening
-  confirmBtn.disabled = true;
-  cancelBtn.disabled = true;
-  confirmBtn.textContent = "Processing...";
+if (confirmBtn) {
+  confirmBtn.addEventListener("click", function () {
+    confirmBtn.disabled = true;
+    if (cancelBtn) cancelBtn.disabled = true;
+    confirmBtn.textContent = "Processing...";
 
-  // A short delay makes it feel like a real transfer (it is only a simulation)
-  setTimeout(function () {
-    const result = makeTransfer(pending);
+    setTimeout(function () {
+      const result = makeTransfer(pending);
 
-    if (result.success) {
-      clearPendingTransfer();   // so refreshing the page can't send it twice
-      showResult("success", "Transfer successful! The money has been sent.");
+      if (result.success) {
+        clearPendingTransfer();
+        showResult("success", "Transfer successful! The money has been sent.");
 
-      document.getElementById("resRef").textContent = result.reference;
-      document.getElementById("resAmount").textContent = formatCurrency(pending.amount);
-      document.getElementById("resBalance").textContent = formatCurrency(result.newBalance);
-      resultDetails.classList.remove("hidden");
+        const resRef = document.getElementById("r-ref");
+        const resAmount = document.getElementById("r-amount");
+        const resBalance = document.getElementById("r-balance");
 
-      resultButtons.appendChild(makeLink("View transactions", "transactions.html", false));
-      resultButtons.appendChild(makeLink("Back to dashboard", "dashboard.html", true));
-      showToast("Transfer of " + formatCurrency(pending.amount) + " completed");
-    } else {
-      showResult("error", "Transfer failed. Nothing was sent.", result.errors);
-      resultButtons.appendChild(makeLink("Back to Transfer page", "transfer.html", true));
-      showToast("Transfer failed");
-    }
-  }, 1000);
-});
+        if (resRef) resRef.textContent = result.reference;
+        if (resAmount) resAmount.textContent = formatCurrency(pending.amount);
+        if (resBalance) resBalance.textContent = formatCurrency(result.newBalance);
+        if (resultDetails) resultDetails.classList.remove("hidden");
+
+        resultButtons.innerHTML = "";
+        resultButtons.appendChild(makeLink("View transactions", "transactions.html", false));
+        resultButtons.appendChild(makeLink("Back to dashboard", "dashboard.html", true));
+        showToast("Transfer of " + formatCurrency(pending.amount) + " completed successfully!", "success");
+        setFlashMessage("Transfer of " + formatCurrency(pending.amount) + " was successful.", "success");
+      } else {
+        showResult("error", "Transfer failed. Nothing was sent.", result.errors);
+        resultButtons.innerHTML = "";
+        resultButtons.appendChild(makeLink("Back to Transfer page", "transfer.html", true));
+        showToast("Transfer failed. Please try again.", "error");
+      }
+    }, 1000);
+  });
+}
 
 // ---------- 6. Cancel button: discard the pending transfer ----------
-cancelBtn.addEventListener("click", function () {
-  clearPendingTransfer();
-  showResult("error", "Transfer cancelled. No money was sent.");
-  resultButtons.appendChild(makeLink("Start a new transfer", "transfer.html", true));
-  resultButtons.appendChild(makeLink("Back to dashboard", "dashboard.html", false));
-  showToast("Transfer cancelled");
-});
+if (cancelBtn) {
+  cancelBtn.addEventListener("click", function () {
+    clearPendingTransfer();
+    showResult("error", "Transfer cancelled. No money was sent.");
+    resultButtons.innerHTML = "";
+    resultButtons.appendChild(makeLink("Start a new transfer", "transfer.html", true));
+    resultButtons.appendChild(makeLink("Back to dashboard", "dashboard.html", false));
+    showToast("Transfer cancelled. No money was sent.", "info");
+  });
+}

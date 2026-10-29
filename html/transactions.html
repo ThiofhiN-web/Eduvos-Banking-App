@@ -5,22 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Eduvos Bank — Transactions</title>
     <!-- Shared styles first, then the styles for this page only -->
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/transactions.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/transactions.css" />
 </head>
 
 <body class="tx-body">
 
-<!-- Shared navigation bar. Keep this identical on every page;
-     only the aria-current="page" attribute moves to the current page. -->
-<nav class="site-nav" aria-label="Main navigation">
-    <span class="site-nav-brand">Eduvos Bank</span>
-    <ul class="site-nav-links">
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="transactions.html" aria-current="page">Transactions</a></li>
-        <li><a href="transfer.html">Transfer</a></li>
-        <li><a href="index.html" id="logout-link">Logout</a></li>
-    </ul>
+<!-- Shared navigation bar -->
+<nav class="nav-bar" aria-label="Main navigation">
+    <span class="nav-brand">Eduvos Banking</span>
+    <span class="nav-spacer"></span>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="transactions.html" aria-current="page">Transactions</a>
+    <a href="transfer.html">Transfer</a>
+    <a href="index.html" id="logout-link" data-logout>Logout</a>
 </nav>
 
 <main class="tx-main">
@@ -105,6 +103,7 @@
 
 <footer class="tx-footer">Secure &middot; Simple &middot; Together</footer>
 
-<script src="js/transactions.js"></script>
+<script src="../js/data.js"></script>
+<script src="../js/transactions.js"></script>
 </body>
 </html>

@@ -58,9 +58,9 @@ function clearFieldError(input, errorEl) {
   input.removeAttribute("aria-invalid");
 }
 
-function showFormAlert(message) {
+function showFormAlert(message, type = "error") {
   formAlert.textContent = message;
-  formAlert.classList.add("visible");
+  formAlert.className = "form-alert visible " + type;
 }
 
 /* Clear an error as soon as the user starts fixing the field */
@@ -115,6 +115,7 @@ form.addEventListener("submit", function (event) {
   // If anything failed, focus the first bad field and stop here
   if (firstInvalid) {
     firstInvalid.focus();
+    showToast("Please correct the highlighted errors.", "error");
     return;
   }
 
@@ -127,11 +128,17 @@ form.addEventListener("submit", function (event) {
       localStorage.removeItem(EDUVOS_REMEMBER_KEY);
     }
 
-    // Success — head to the dashboard (built by a teammate)
-    window.location.href = "dashboard.html";
+    const bank = getBankData();
+    setFlashMessage("Welcome back, " + bank.user.name + "!", "success");
+    showFormAlert("Login successful! Redirecting...", "success");
+    showToast("Login successful!", "success");
+
+    setTimeout(function () {
+      window.location.href = "dashboard.html";
+    }, 400);
   } else {
-    // Generic message on purpose: don't reveal which part was wrong
-    showFormAlert("Incorrect username or password. Please try again.");
+    showFormAlert("Incorrect username or password. Please try again.", "error");
+    showToast("Incorrect username or password.", "error");
     passwordInput.value = "";
     passwordInput.focus();
   }
@@ -141,11 +148,14 @@ form.addEventListener("submit", function (event) {
 document.getElementById("forgot-link").addEventListener("click", function (e) {
   e.preventDefault();
   showFormAlert(
-    "This is a demo — password reset is not implemented. Use demo / Demo@1234."
+    "This is a demo — password reset is not implemented. Use demo / Demo@1234.",
+    "info"
   );
+  showToast("Demo mode: Use demo / Demo@1234", "info");
 });
 
 document.getElementById("signup-link").addEventListener("click", function (e) {
   e.preventDefault();
-  showFormAlert("This is a demo — sign up is not implemented. Use demo / Demo@1234.");
+  showFormAlert("This is a demo — sign up is not implemented. Use demo / Demo@1234.", "info");
+  showToast("Demo mode: Use demo / Demo@1234", "info");
 });

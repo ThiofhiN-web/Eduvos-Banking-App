@@ -1,47 +1,25 @@
 // transactions.js: Transaction history page (search, filter, sort)
-//
-// Reads the data that transfer.js already saves in localStorage:
-//   "balance"      -> a number (as text)
-//   "transactions" -> a JSON array, newest first, each item like:
-//        { type: "deposit" | "withdrawal", description, amount, date (ISO text), ref }
+// Integrates with data.js: reads getBankData().transactions.
 // This page only READS that data. It never changes the balance.
 
 (function () {
   "use strict";
 
-  // ---------- Settings ----------
-  // TODO (group): login.js has to save this key when a user logs in successfully,
-  // for example: sessionStorage.setItem("loggedIn", "true");
-  // Change this one line if the login page uses a different key.
-  var LOGIN_FLAG_KEY = "eduvosLoggedIn";
-  var LOGIN_PAGE = "index.html";
+  // ---------- Page protection ----------
+  // If the user is not logged in, send them to the login page.
+  if (!requireLogin()) {
+    return; // stop here: nothing else on this page runs
+  }
 
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-  // ---------- Page protection ----------
-  // If the user is not logged in, send them to the login page.
-  function isLoggedIn() {
-    try {
-      var flag = sessionStorage.getItem(LOGIN_FLAG_KEY) || localStorage.getItem(LOGIN_FLAG_KEY);
-      return !!flag && flag !== "false";
-    } catch (e) {
-      return false;
-    }
-  }
-  if (!isLoggedIn()) {
-    window.location.replace(LOGIN_PAGE);
-    return; // stop here: nothing else on this page runs
-  }
-
   // ---------- Helpers ----------
   var $ = function (id) { return document.getElementById(id); };
 
-  // Money: 12500 -> "R 12 500.00" (same style as the shared convention)
+  // Money: uses formatCurrency from data.js
   function money(n) {
-    var parts = Math.abs(n).toFixed(2).split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    return "R " + parts.join(".");
+    return formatCurrency(n);
   }
 
   function pad(n) { return n < 10 ? "0" + n : String(n); }
@@ -53,54 +31,19 @@
            ", " + pad(d.getHours()) + ":" + pad(d.getMinutes());
   }
 
-  // ---------- Reading and saving data ----------
+  // ---------- Reading data ----------
   var loadProblem = ""; // message shown in the alert box if something went wrong
 
-  // Fictional starter history. Only used when nobody has saved any
-  // transactions yet. Deposits minus withdrawals = R 12 500.00, which matches
-  // the default starting balance in transfer.js.
-  function buildDemoTransactions() {
-    var DAY = 24 * 60 * 60 * 1000;
-    function daysAgo(n) { return new Date(Date.now() - n * DAY).toISOString(); }
-    return [
-      { type: "withdrawal", description: "Eduvos textbooks",        amount: 2000.00,  date: daysAgo(3)  },
-      { type: "deposit",    description: "Refund: online order",     amount: 450.00,   date: daysAgo(6)  },
-      { type: "withdrawal", description: "Prepaid electricity",      amount: 750.00,   date: daysAgo(9)  },
-      { type: "withdrawal", description: "Airtime and data",         amount: 299.50,   date: daysAgo(12) },
-      { type: "deposit",    description: "Cash deposit",             amount: 1200.00,  date: daysAgo(15) },
-      { type: "withdrawal", description: "Groceries",                amount: 1100.50,  date: daysAgo(20) },
-      { type: "deposit",    description: "Part-time job payment",    amount: 15000.00, date: daysAgo(28) }
-    ];
-  }
-
   function loadTransactions() {
-    var raw = null;
+    var bank;
     try {
-      raw = localStorage.getItem("transactions");
+      bank = getBankData();
     } catch (e) {
       loadProblem = "Your browser is blocking saved data, so no transactions can be shown.";
       return [];
     }
 
-    // First visit: nothing saved yet, so start with the demo history.
-    if (raw === null) {
-      var demo = buildDemoTransactions();
-      try { localStorage.setItem("transactions", JSON.stringify(demo)); } catch (e) {}
-      return demo.map(prepare).filter(Boolean);
-    }
-
-    var list;
-    try {
-      list = JSON.parse(raw);
-    } catch (e) {
-      loadProblem = "Your saved transactions could not be read.";
-      return [];
-    }
-    if (!Array.isArray(list)) {
-      loadProblem = "Your saved transactions could not be read.";
-      return [];
-    }
-
+    var list = (bank && Array.isArray(bank.transactions)) ? bank.transactions : [];
     var clean = [];
     var skipped = 0;
     list.forEach(function (item, index) {
@@ -122,7 +65,13 @@
     if (!isFinite(amount) || amount < 0) return null;
     if (item.type !== "deposit" && item.type !== "withdrawal") return null;
 
-    var date = new Date(item.date);
+    var date;
+    if (typeof item.date === "string") {
+      date = item.date.includes("T") ? new Date(item.date) : new Date(item.date + "T00:00:00");
+    } else {
+      date = new Date(item.date);
+    }
+
     return {
       type: item.type,
       description: String(item.description || "Transaction"),
@@ -271,11 +220,15 @@
 
   // ---------- Events ----------
   function clearFilters() {
+    var wasFiltered = searchInput.value !== "" || typeSelect.value !== "all" || sortSelect.value !== "newest";
     searchInput.value = "";
     typeSelect.value = "all";
     sortSelect.value = "newest";
     render();
     searchInput.focus();
+    if (wasFiltered) {
+      showToast("Filters reset. Showing all " + allTransactions.length + " transactions.", "info", 2000);
+    }
   }
 
   searchInput.addEventListener("input", render);
@@ -287,13 +240,13 @@
   // Pressing Enter in the search box should not reload the page
   $("filter-form").addEventListener("submit", function (e) { e.preventDefault(); });
 
-  // Logout: remove the login flag, then the link goes to the login page
-  $("logout-link").addEventListener("click", function () {
-    try {
-      sessionStorage.removeItem(LOGIN_FLAG_KEY);
-      localStorage.removeItem(LOGIN_FLAG_KEY);
-    } catch (e) {}
-  });
+  // Logout: handled by data.js; also safely handle if logout-link exists
+  var logoutEl = $("logout-link");
+  if (logoutEl) {
+    logoutEl.addEventListener("click", function () {
+      logoutUser();
+    });
+  }
 
   // ---------- Start ----------
   if (loadProblem) {

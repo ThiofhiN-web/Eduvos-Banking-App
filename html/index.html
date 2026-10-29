@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eduvos Bank — Log In</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body class="login-body">
+
+  <main class="login-main">
+    <!-- Brand header: bank icon + wordmark (matches the group design) -->
+    <header class="login-brand">
+      <!-- Simple bank-building icon drawn with inline SVG -->
+      <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 10.5 12 4l9 6.5" />
+        <path d="M4 20h16" />
+        <path d="M6 20v-7M10 20v-7M14 20v-7M18 20v-7" />
+        <path d="M3 20h18" opacity="0" />
+        <path d="M4 20h16" />
+        <path d="M6.5 13h11" />
+      </svg>
+      <h1>Eduvos Bank</h1>
+      <p class="tagline">Your Goals. Our Priority.</p>
+    </header>
+
+    <!-- Welcome heading above the form card -->
+    <section class="login-welcome" aria-labelledby="welcome-heading">
+      <h2 id="welcome-heading">Welcome Back</h2>
+      <p>Log in to your account</p>
+    </section>
+
+    <!-- Login form card -->
+    <section class="login-card">
+      <!-- Top-of-form alert for credential errors (ARIA live region) -->
+      <div id="form-alert" class="form-alert" role="alert"></div>
+
+      <form id="login-form" novalidate>
+        <!-- Username -->
+        <div class="field">
+          <label for="username">Username / Email</label>
+          <div class="input-wrap">
+            <!-- Person icon -->
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-3.5 3.6-5.5 8-5.5s8 2 8 5.5" />
+            </svg>
+            <input type="text" id="username" name="username"
+                   placeholder="Username / Email"
+                   autocomplete="username" required
+                   aria-describedby="username-error" />
+          </div>
+          <p id="username-error" class="field-error" role="alert"></p>
+        </div>
+
+        <!-- Password with show/hide toggle -->
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <!-- Lock icon -->
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <rect x="4.5" y="10.5" width="15" height="10" rx="2" />
+              <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" />
+            </svg>
+            <input type="password" id="password" name="password"
+                   placeholder="Password"
+                   autocomplete="current-password" required
+                   aria-describedby="password-error" />
+            <button type="button" id="toggle-password" class="toggle-password"
+                    aria-label="Show password" aria-pressed="false">
+              <!-- Eye icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12Z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
+          <p id="password-error" class="field-error" role="alert"></p>
+        </div>
+
+        <!-- Remember me + forgot password -->
+        <div class="login-options">
+          <label class="checkbox-label" for="remember">
+            <input type="checkbox" id="remember" name="remember" />
+            Remember me
+          </label>
+          <a href="#" class="forgot-link" id="forgot-link">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Log In</button>
+
+        <p class="login-signup">
+          Don't have an account? <a href="#" id="signup-link">Sign Up</a>
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="login-footer">Secure &middot; Simple &middot; Together</footer>
+
+  <!-- Shared data/helpers first, then this page's script -->
+  <script src="../js/data.js"></script>
+  <script src="../js/login.js"></script>
+</body>
+</html>

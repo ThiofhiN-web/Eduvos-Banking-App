@@ -274,6 +274,60 @@ a { color: var(--colour-accent); }
 }
 
 .form-alert.visible { display: block; }
+.form-alert.success {
+  background: #e5f4ea;
+  color: #1b6e3a;
+  border: 1px solid #1b6e3a;
+}
+.form-alert.info {
+  background: #e8f0fe;
+  color: #1967d2;
+  border: 1px solid #aecbfa;
+}
+
+/*   Shared Toast Notification   */
+.toast {
+  position: fixed;
+  left: 50%;
+  top: 4.5rem;
+  transform: translateX(-50%) translateY(0);
+  max-width: 90%;
+  min-width: 280px;
+  padding: 0.8rem 1.4rem;
+  border-radius: var(--radius-input);
+  background: var(--colour-navy-deep);
+  color: var(--colour-surface);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  font-size: 0.95rem;
+  font-weight: 500;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  opacity: 1;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.toast.toast-success {
+  background: #0f4a24;
+  border: 1px solid #1e8e5a;
+  color: #e5f4ea;
+}
+.toast.toast-error {
+  background: #5c1813;
+  border: 1px solid #c0392b;
+  color: #fdecea;
+}
+.toast.toast-info {
+  background: #0e294b;
+  border: 1px solid #2e6fd6;
+  color: #e8f0fe;
+}
+.toast.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-12px);
+  pointer-events: none;
+}
 
 /*   Shared navigation bar  */
 .nav-bar {
